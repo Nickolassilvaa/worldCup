@@ -10,6 +10,9 @@ interface IProps {
 export function App() {
   const [listTeam, setListTeam] = useState<IProps[]>([])
   const [groups, setGroups] = useState<IProps[][]>([])
+
+  const nameGroup = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+
   const getTeams = useCallback(async () => {
     await api
       .get('/WorldCup/GetAllTeams')
@@ -38,12 +41,21 @@ export function App() {
   return (
     <>
       {listTeam.length > 0 ? (
-        <div className="flex flex-col gap-5 w-full h-[100vh] items-start justify-center px-4">
+        <div className="px-8 flex items-center justify-center">
           {groups.map((item, key) => {
-            console.log(item)
+            console.log(key, item)
             return (
-              <div className="p-8 border w-[200px]" key={key}>
-                <ul>Grupo {key + 1}</ul>
+              <div key={key} className="">
+                <p>Grupo {nameGroup[key]}</p>
+                <div className="w-[200px]">
+                  {item.map((itemId) => {
+                    return (
+                      <ul key={itemId.Token}>
+                        <li className="border">{itemId.Name}</li>
+                      </ul>
+                    )
+                  })}
+                </div>
               </div>
             )
           })}
@@ -54,20 +66,3 @@ export function App() {
     </>
   )
 }
-
-// ;<div className="groups">
-//   {groups.map((item, key) => {
-//     return (
-//       <>
-//         <li>Grupo {key + 1}</li>
-//         {item.find((item, keyItem) => {
-//           if (keyItem + 1 === key + 1) {
-//             return item.Name
-//           } else {
-//             return false
-//           }
-//         })}
-//       </>
-//     )
-//   })}
-// </div>
